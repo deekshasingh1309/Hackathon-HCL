@@ -37,7 +37,7 @@ const RegistrationForm = () => {
     .post('http://localhost:5000/register', {updatedFormData})
     .then((response) => {
        console.log("Response from registration", response.data);
-       navigate.push('/');
+       navigate('/');
     })
   };
 

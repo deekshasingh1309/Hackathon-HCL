@@ -5,19 +5,9 @@ import Login from "./components/Login";
 import { useState } from "react";
 import {createBrowserRouter} from "react-router-dom";
 import RegistrationForm from "./components/Registration";
+import PatientDashboard from "./components/PatientDashboard";
 function App() {
-  const [isValidUser, setValidUser] = useState(false);
-  return isValidUser ? (
-    <div className="App">
-      <RegistrationForm/>
-      <Header />
-      <Body />
-    </div>
-  ) : (
-    <div className="App">
-      <Login />
-    </div>
-  );
+  return <Login />
 }
 
 export const AppRouter= createBrowserRouter([
@@ -25,10 +15,10 @@ export const AppRouter= createBrowserRouter([
     path:"/",
     element:<App/>
   },
-  // {
-  //   path:"/login",
-  //   element:<Login/>
-  // },
+  {
+    path:"/dashboard",
+    element:<PatientDashboard/>
+  },
   {
     path:"/register",
     element:<RegistrationForm/>

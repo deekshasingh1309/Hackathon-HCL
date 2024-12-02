@@ -34,14 +34,14 @@ app.post('/register' , async (req, res) => {
 app.post('/login' , async (req, res) => {
     console.log("Login =========>");
     const { email_id, password } = req.body;
-
+   console.log("email", email_id, password);
     try {
         // Decrypt the password
-        const decryptedBytes = cryptoJS.AES.decrypt(password, process.env.ENCRYPT_SECRETKEY);
+        const decryptedBytes = cryptoJS.AES.decrypt((password), process.env.ENCRYPT_SECRETKEY).toString();
         const decryptedPassword = decryptedBytes.toString(cryptoJS.enc.Utf8);
         console.log('decryptedPassword', decryptedPassword);
         const isMatch = await Register.find({ "email_id" : email_id});
-        const comparePassword = isMatch[0].password === password;
+        const comparePassword = isMatch[0]?.password === password;
             if (comparePassword) {
                 const token = jwt.sign({ email_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
                 res.json({ token: token, email_id: email_id});

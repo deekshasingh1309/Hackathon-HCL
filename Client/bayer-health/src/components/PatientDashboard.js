@@ -25,7 +25,7 @@ const PatientDashboard=()=> {
   return (
     <div className="App">
       <h1>Patient Dashboard</h1>
-      {loading && <p>Loading appointments...</p>}
+      {/* {loading && <p>Loading appointments...</p>}
       {error && <p>{error}</p>}
       <div className="appointments">
         <h2>Upcoming Appointments</h2>
@@ -42,7 +42,7 @@ const PatientDashboard=()=> {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 }

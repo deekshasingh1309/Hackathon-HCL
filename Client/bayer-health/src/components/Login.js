@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
+import axios from 'axios';
+import { SHA256 } from "crypto-js";
 
-const login = () => {
+const Login = () => {
   const [loginData, setLoginData] = useState({
     email_id: "",
     password: "",
   });
-
-  const onHandleChange = (e) => {
+  const navigate = useNavigate();
+    const onHandleChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prevData) => ({
       ...prevData,
@@ -15,7 +17,7 @@ const login = () => {
     }));
   };
 
-  const onButtonHandle = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const encryptedPassword = SHA256(loginData.password).toString();
     const updatedFormData = {
@@ -23,10 +25,10 @@ const login = () => {
       password: encryptedPassword,
     };
     axios
-      .post("http://localhost:5000/login", { updatedFormData })
+      .post("http://localhost:5000/login", { ...updatedFormData })
       .then((response) => {
         console.log("Response from registration", response.data);
-        history.push("/");
+        navigate('/dashboard');
       });
   };
 
@@ -42,21 +44,23 @@ const login = () => {
         </div>
         <h1 class="logo">Login</h1>
 
-        <form onSubmit={() => onButtonHandle()}>
+        <form onSubmit={handleSubmit}> 
           <input
             type="email"
+            name="email_id"
             placeholder="Email"
-            value={form.email_id}
+            value={loginData.email_id}
             required
-            onChange={() => onHandleChange()}
+            onChange={(e) => onHandleChange(e)}
           />
-          <input
+          <input  
             type="password"
+            name="password"
             placeholder="Password"
-            value={form.password}
+            value={loginData.password}
             required
-            onChange={() => {
-              onHandleChange();
+            onChange={(e) => {
+              onHandleChange(e);
             }}
           />
           <button class="login-btn" type="submit">
@@ -66,7 +70,7 @@ const login = () => {
         <div class="links">
           <Link
             to={{
-              pathname: "/registration",
+              pathname: "/register",
             }}
           >
             New User? Register here
@@ -77,4 +81,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
