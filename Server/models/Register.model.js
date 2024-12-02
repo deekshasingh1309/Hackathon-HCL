@@ -3,7 +3,7 @@ const registerSchema = new mongoose.Schema({
     user_name: String,
     password: String,
     email_id: String,
-    role: Number
+    role: String
 },
     { timestamps: true }
 )

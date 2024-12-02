@@ -1,13 +1,18 @@
 // Registration Form
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { SHA256 } from "crypto-js";
+import "../App.css";
 const RegistrationForm = () => {
   const [userType, setUserType] = useState("patient"); // Default to 'patient'
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     password: "",
+    role: "",
   });
+  let history = useHistory();
 
   // Handle form data changes
   const handleChange = (e) => {
@@ -24,17 +29,20 @@ const RegistrationForm = () => {
     console.log("Form submitted with data:", formData);
     // Here, you would typically send the data to your backend server
     registerUser();
-  };
-
-  async function registerUser(params) {
-    try {
-      await axios.post("http://localhost:5000/register").then((response) => {
-        formData(response.data);
+    // Encrypt the password
+    const encryptedPassword = SHA256(formData.password).toString();
+    const updatedFormData = {
+      ...formData,
+      password: encryptedPassword,
+    };
+    // Here, you would typically send the data to your backend server
+    axios
+      .post("http://localhost:5000/register", { updatedFormData })
+      .then((response) => {
+        console.log("Response from registration", response.data);
+        history.push("/");
       });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  };
 
   /* 
  curl --location 'http://localhost:5000/register' \
@@ -115,12 +123,12 @@ const RegistrationForm = () => {
             />
           </label>
         </div>
-        <div>
+        <div className="select-user-type">
           <label>
-            User type:
+            Role:
             <select name="userType" id="userType">
               <option value="patient">Patient</option>
-              <option value="doctor">Doctor</option>
+              <option value="provider">Health care provider</option>
             </select>
           </label>
         </div>
