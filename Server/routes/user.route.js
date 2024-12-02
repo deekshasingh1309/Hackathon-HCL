@@ -5,3 +5,5 @@ const authenticateToken = require('../middlewares/jwtAuth');
 const {  validateUser, createUser  } = require('../controllers/user.controller');
 
 router.post('/register', createUser);
+
+module.exports = router;
