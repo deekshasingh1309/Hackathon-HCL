@@ -1,5 +1,6 @@
 // Registration Form
 import React, { useEffect, useState } from 'react';
+import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import { SHA256 } from "crypto-js";
 import '../App.css';
@@ -11,6 +12,7 @@ const RegistrationForm = () => {
     password: '',
     role : ''
   });
+  let history = useHistory();
 
   // Handle form data changes
   const handleChange = (e) => {
@@ -24,12 +26,19 @@ const RegistrationForm = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted with data:', formData);
+    // Encrypt the password
+    const encryptedPassword = SHA256(formData.password).toString();
+    const updatedFormData = { 
+      ...formData, 
+      password: encryptedPassword 
+  };
+    console.log('Form submitted with data:', updatedFormData);
     // Here, you would typically send the data to your backend server
     axios
-    .post('http://localhost:5000/register', {formData})
+    .post('http://localhost:5000/register', {updatedFormData})
     .then((response) => {
        console.log("Response from registration", response.data);
+       history.push('/')
     })
   };
 

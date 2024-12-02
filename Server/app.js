@@ -4,6 +4,7 @@ const cors = require("cors");
 const routes = require('./routes');
 const cryptoJS = require('crypto-js');
 const Register = require('./models/Register.model');
+const Booking = require('./models/Booking.model');
 const jwt = require('jsonwebtoken');
 require('./dbConnection/connect');
 require('dotenv').config();
@@ -51,6 +52,14 @@ app.post('/login' , async (req, res) => {
         console.error(err);
         res.status(500).json({ message: 'Internal server error' });
     }
+});
+
+/******* Booking System ********/
+app.post('booking', async(req, res) => {
+   console.log("Booking System =========>");
+   const bookingData = new Booking(req.body);
+   await bookingData.save();
+   res.status(200).json({ message : "Appointment Booked Successfully"});
 });
 
 app.listen(PORT, () => console.log(`Server listening on port : ${PORT}`));
