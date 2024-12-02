@@ -2,11 +2,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const Register = require('./models/Register.model');
+require('dotenv').config();
+
 const PORT = 5000;
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, "error in connecting"));
 db.once('open', () => console.log('Connected to mongo db'));
@@ -15,10 +22,10 @@ app.get('/health' , async(req, res) => {
     console.log('Health check passed');
     res.json({ message : "Health check passed"});
 })
-app.get('/register' , async(req, res) => {
-    console.log('Register page');
+app.post('/register' , async(req, res) => {
+    console.log('Register page', req.body);
     const userData = new Register(req.body);
     await userData.save();
-    res.status(201).send();
+    res.status(201).json({"message" : "Registered successfully" });
 })
 app.listen(PORT, () => console.log(`Server listening on port : ${PORT}`));
