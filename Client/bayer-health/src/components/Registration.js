@@ -1,12 +1,12 @@
 // Registration Form
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 const RegistrationForm = () => {
-  const [userType, setUserType] = useState('patient'); // Default to 'patient'
+  const [userType, setUserType] = useState("patient"); // Default to 'patient'
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
+    fullName: "",
+    email: "",
+    password: "",
   });
 
   // Handle form data changes
@@ -21,17 +21,22 @@ const RegistrationForm = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted with data:', formData);
+    console.log("Form submitted with data:", formData);
     // Here, you would typically send the data to your backend server
-    axios
-    .get('http://localhost:5000/register')
-    .then((response) => {
-        formData(response.data);
-    })
+    registerUser();
   };
 
+  async function registerUser(params) {
+    try {
+      await axios.post("http://localhost:5000/register").then((response) => {
+        formData(response.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
- /* 
+  /* 
  curl --location 'http://localhost:5000/register' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -43,8 +48,15 @@ const RegistrationForm = () => {
 
   return (
     <div className="registration-container">
+      <div class="logo">
+        <img
+          src="https://www.bayer.com/themes/custom/bayer_cpa/logo.svg"
+          width="80"
+          alt="Bayer Healthcare Logo"
+        />
+      </div>
       <h1>Register</h1>
-      
+
       {/* User Type Selection */}
       <div>
         {/* <label>
@@ -107,8 +119,8 @@ const RegistrationForm = () => {
           <label>
             User type:
             <select name="userType" id="userType">
-                <option value="patient">Patient</option>
-                <option value="doctor">Doctor</option>
+              <option value="patient">Patient</option>
+              <option value="doctor">Doctor</option>
             </select>
           </label>
         </div>
@@ -150,4 +162,3 @@ const RegistrationForm = () => {
 };
 
 export default RegistrationForm;
-  
