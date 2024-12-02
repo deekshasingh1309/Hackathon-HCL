@@ -3,6 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  margin-top:100px;
 }
 
 .login-card {
@@ -13,6 +14,12 @@
   width: 300px;
 }
 
+.login-card .logo {
+  text-align: center;
+}
+.links {
+  margin-top:10px;
+}
 input {
   margin: 10px 0;
   padding: 10px;
@@ -21,11 +28,12 @@ input {
 }
 
 .login-btn {
-  background-color: var(--primary-green);
-  color: var(--white);
+  background-color: #4CAF50;
+  color: #fff;
   border: none;
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
   margin-top: 10px;
+  font-weight: bold;
 }

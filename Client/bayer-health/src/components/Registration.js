@@ -1,19 +1,17 @@
 // Registration Form
-import React, { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { SHA256 } from "crypto-js";
 import '../App.css';
 const RegistrationForm = () => {
-  const [userType, setUserType] = useState('patient'); // Default to 'patient'
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
     role : ''
   });
-  let history = useHistory();
-
+  const navigate = useNavigate();
   // Handle form data changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +36,7 @@ const RegistrationForm = () => {
     .post('http://localhost:5000/register', {updatedFormData})
     .then((response) => {
        console.log("Response from registration", response.data);
-       history.push('/')
+       navigate.push('/');
     })
   };
 

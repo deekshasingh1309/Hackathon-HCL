@@ -55,11 +55,12 @@ app.post('/login' , async (req, res) => {
 });
 
 /******* Booking System ********/
-app.post('booking', async(req, res) => {
+app.post('/booking', async(req, res) => {
    console.log("Booking System =========>");
    const bookingData = new Booking(req.body);
    await bookingData.save();
    res.status(200).json({ message : "Appointment Booked Successfully"});
 });
+
 
 app.listen(PORT, () => console.log(`Server listening on port : ${PORT}`));
