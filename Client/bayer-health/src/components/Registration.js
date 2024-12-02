@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { SHA256 } from "crypto-js";
-import '../App.css';
+import "../App.css";
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    role : ''
+    fullName: "",
+    email: "",
+    password: "",
+    role: "",
   });
   const navigate = useNavigate();
   // Handle form data changes
@@ -24,13 +24,15 @@ const RegistrationForm = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Form submitted with data:", formData);
+    // Here, you would typically send the data to your backend server
+    registerUser();
     // Encrypt the password
     const encryptedPassword = SHA256(formData.password).toString();
-    const updatedFormData = { 
-      ...formData, 
-      password: encryptedPassword 
-  };
-    console.log('Form submitted with data:', updatedFormData);
+    const updatedFormData = {
+      ...formData,
+      password: encryptedPassword,
+    };
     // Here, you would typically send the data to your backend server
     axios
     .post('http://localhost:5000/register', {updatedFormData})
@@ -40,8 +42,7 @@ const RegistrationForm = () => {
     })
   };
 
-
- /* 
+  /* 
  curl --location 'http://localhost:5000/register' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -53,8 +54,15 @@ const RegistrationForm = () => {
 
   return (
     <div className="registration-container">
+      <div class="logo">
+        <img
+          src="https://www.bayer.com/themes/custom/bayer_cpa/logo.svg"
+          width="80"
+          alt="Bayer Healthcare Logo"
+        />
+      </div>
       <h1>Register</h1>
-      
+
       {/* User Type Selection */}
       <div>
         {/* <label>
@@ -117,8 +125,8 @@ const RegistrationForm = () => {
           <label>
             Role:
             <select name="userType" id="userType">
-                <option value="patient">Patient</option>
-                <option value="provider">Health care provider</option>
+              <option value="patient">Patient</option>
+              <option value="provider">Health care provider</option>
             </select>
           </label>
         </div>
@@ -160,4 +168,3 @@ const RegistrationForm = () => {
 };
 
 export default RegistrationForm;
-  
