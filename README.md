@@ -1,3 +1,3 @@
 # Hackathon-HCL
 
-Healthcare Patient Portal
+Healthcare Patient Portal System
