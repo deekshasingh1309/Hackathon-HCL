@@ -26,7 +26,6 @@ const RegistrationForm = () => {
     e.preventDefault();
     console.log("Form submitted with data:", formData);
     // Here, you would typically send the data to your backend server
-    registerUser();
     // Encrypt the password
     const encryptedPassword = SHA256(formData.password).toString();
     const updatedFormData = {
