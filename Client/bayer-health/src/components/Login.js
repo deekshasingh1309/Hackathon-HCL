@@ -11,7 +11,7 @@ const login = () => {
             alt="Bayer Healthcare Logo"
           />
         </div>
-        <h1>Login</h1>
+        <h1 class="logo">Login</h1>
         <form>
           <input type="email" placeholder="Email" required="" />
           <input type="password" placeholder="Password" required="" />
