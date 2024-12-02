@@ -1,31 +1,56 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const routes = require('./routes');
+const cryptoJS = require('crypto-js');
 const Register = require('./models/Register.model');
+const jwt = require('jsonwebtoken');
+require('./dbConnection/connect');
 require('dotenv').config();
 
 const PORT = 5000;
 const app = express();
+
 app.use(bodyParser.json());
 app.use(cors());
 
-mongoose.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, "error in connecting"));
-db.once('open', () => console.log('Connected to mongo db'));
+app.use('/', routes);
 
 app.get('/health' , async(req, res) => {
     console.log('Health check passed');
     res.json({ message : "Health check passed"});
-})
-app.post('/register' , async(req, res) => {
-    console.log('Register page', req.body);
+});
+
+/********* Registration Screen *********/
+app.post('/register' , async (req, res) => {
+    console.log("Registration ====>");
     const userData = new Register(req.body);
     await userData.save();
     res.status(201).json({"message" : "Registered successfully" });
-})
+});
+
+/********** Login Screen ******/
+app.post('/login' , async (req, res) => {
+    console.log("Login =========>");
+    const { email_id, password } = req.body;
+
+    try {
+        // Decrypt the password
+        const decryptedBytes = cryptoJS.AES.decrypt(password, process.env.ENCRYPT_SECRETKEY);
+        const decryptedPassword = decryptedBytes.toString(cryptoJS.enc.Utf8);
+        console.log('decryptedPassword', decryptedPassword);
+        const isMatch = await Register.find({ "email_id" : email_id});
+        const comparePassword = isMatch[0].password === password;
+            if (comparePassword) {
+                const token = jwt.sign({ email_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+                res.json({ token: token, email_id: email_id});
+            } else {
+                res.status(401).json({ message: 'Invalid email/password' });
+            }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 app.listen(PORT, () => console.log(`Server listening on port : ${PORT}`));
