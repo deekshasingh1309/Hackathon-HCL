@@ -23,7 +23,7 @@ const login = () => {
           <a href="#">Forgot Password?</a>
           <br />
           <br />
-          <a href="#">New User? Register here</a>
+          <a href="/register">New User? Register here</a>
         </div>
       </div>
     </div>

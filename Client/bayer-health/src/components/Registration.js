@@ -1,12 +1,15 @@
 // Registration Form
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { SHA256 } from "crypto-js";
+import '../App.css';
 const RegistrationForm = () => {
   const [userType, setUserType] = useState('patient'); // Default to 'patient'
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
+    role : ''
   });
 
   // Handle form data changes
@@ -24,9 +27,9 @@ const RegistrationForm = () => {
     console.log('Form submitted with data:', formData);
     // Here, you would typically send the data to your backend server
     axios
-    .get('http://localhost:5000/register')
+    .post('http://localhost:5000/register', {formData})
     .then((response) => {
-        formData(response.data);
+       console.log("Response from registration", response.data);
     })
   };
 
@@ -103,12 +106,12 @@ const RegistrationForm = () => {
             />
           </label>
         </div>
-        <div>
+        <div className="select-user-type">
           <label>
-            User type:
+            Role:
             <select name="userType" id="userType">
                 <option value="patient">Patient</option>
-                <option value="doctor">Doctor</option>
+                <option value="provider">Health care provider</option>
             </select>
           </label>
         </div>
